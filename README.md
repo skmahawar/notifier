@@ -119,8 +119,6 @@ Supported now:
 * [Twilio](https://github.com/twilio/twilio-node)
 * [Android push notification](https://github.com/ToothlessGear/node-gcm)
 * [iOS push notification](https://github.com/argon/node-apn)
-
-Will be added soon:
 * [Mailgun](https://github.com/jimrubenstein/node-mandrill)
 
 If you want to extend transport support:
