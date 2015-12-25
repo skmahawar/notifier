@@ -10,11 +10,23 @@ var config = {
 	logentries: {
 		token: null
 	},
+	
+    mailOptions: {
+        welcome: {
+            to: "example@gmail.com",
+            from: "Suresh Mahawar <suresh.mahawar1988@gmail.com>",
+            subject: "Hello, World!"
+        }
+    },
 
 	transport: {
 		mandrill: {
 			token: 'fake-mandrill-api-token'
 		},
+		mailgun: {
+            api_key: 'fake-mailgun-api-token',
+            domain: 'example.com'
+        },
 		twilio : {
 			accountSid: 'fake-twilio-account-sid',
 			authToken: 'fake-twilio-auth-token'

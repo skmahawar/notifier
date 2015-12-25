@@ -1,5 +1,10 @@
 var notifier = require('../source/notifier');
 
+var path = require('path');
+var config = require('../config');
+var EmailTemplate = require('email-templates').EmailTemplate;
+var templateDir = path.join(__dirname, '..', 'templates');
+
 notifier
 	.receive('user-registered', function (e, actions, callback) {
 		actions.create('send-welcome-email', {user: e.user}, callback);
@@ -15,8 +20,8 @@ notifier
 	})
 	.execute('send-welcome-email', function (a, transport, callback) {
 		var user = a.data;
-
-		var vars = [
+		//Send Email via Mandrill
+/*		var vars = [
 			{ name: 'USER_NAME', content: user.name },
 			{ name: 'USER_EMAIL', content: user.email}
 
@@ -30,7 +35,22 @@ notifier
 				to: [{email: user.email}],
 				global_merge_vars: vars
 			}
-		}, callback);
+		}, callback);*/
+
+		// OR Send Email via Mailgun
+        var welcomeDir = path.join(templateDir, "welcome-email");
+        var welcomeEmail = new EmailTemplate(welcomeDir);
+
+        welcomeEmail.render(user, function(err, results) {
+            var data = {
+                from: config.mailOptions.welcome.from,
+                to: user.email,
+                subject: config.mailOptions.welcome.subject,
+                text: results.text,
+                html: results.html
+            };
+            transport.mailgun.messages().send(data, callback);
+        });
 	});
 
 notifier

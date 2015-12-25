@@ -1,4 +1,5 @@
 var mandrill = require('node-mandrill');
+var mailgun = require('mailgun-js');
 var twilio = require('twilio');
 var gcm = require('node-gcm');
 var apn = require('apn');
@@ -17,6 +18,23 @@ var setupMandrill = function () {
 	function validConfig() {
 		return config.transport.mandrill && config.transport.mandrill.token;
 	}
+};
+
+var setupMailGun = function() {
+    if (!validConfig()) {
+        var errorMsg = 'missing mailgun api key or domain, please update config.transport.mailgun section';
+        logger.error(errorMsg);
+        throw new Error(errorMsg);
+    }
+
+    return mailgun({
+        apiKey: config.transport.mailgun.api_key,
+        domain: config.transport.mailgun.domain
+    });
+
+    function validConfig() {
+        return config.transport.mailgun && config.transport.mailgun.api_key && config.transport.mailgun.domain;
+    }
 };
 
 var setupTwilio = function () {
@@ -162,6 +180,7 @@ var setupIOSPushNotification = function () {
 
 var transport = {
 	mandrill: setupMandrill(),
+	mailgun: setupMailGun(),
 	twilio: setupTwilio(),
 	android: setupAndroidPushNotification(),
 	ios: setupIOSPushNotification()

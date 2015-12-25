@@ -10,11 +10,23 @@ var config = {
 		url: process.env.HOOK_URL,
 		token: process.env.HOOK_TOKEN
 	},
+	
+    mailOptions: {
+        welcome: {
+            to: "example@gmail.com",
+            from: "Suresh Mahawar <suresh.mahawar1988@gmail.com>",
+            subject: "Hello, World!"
+        }
+    },
 
 	transport: {
 		mandrill: {
 			token: process.env.MANDRILL_TOKEN
 		},
+		mailgun: {
+            api_key: process.env.MAILGUN_API_KEY,
+            domain: process.env.MAILGUN_DOMAIN
+        },
 		twilio : {
 			accountSid: process.env.TWILIO_ACCOUNT_SID,
 			authToken: process.env.TWILIO_ACCOUNT_TOKEN
